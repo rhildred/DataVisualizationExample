@@ -27,8 +27,8 @@ package {
 		}
 		
 		private function onFrameLoop(evt:Event):void {
-			oMovieClip.cycle.x = mouseX;
-			oMovieClip.cycle.wheel.rotation = mouseX;
+			oMovieClip["cycle"]["x"] = mouseX;
+			oMovieClip["cycle"]["wheel"]["rotation"] = mouseX;
 		}
 	}
 }
