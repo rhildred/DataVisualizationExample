@@ -15,7 +15,7 @@ package {
 		public function Asset() {
 			addChild(loader);
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,doneLoad);
-			loader.load(new URLRequest("space2.jpg"));
+			loader.load(new URLRequest("assets/space2.jpg"));
 		}
 
 		private function doneLoad(event : Event) : void {
