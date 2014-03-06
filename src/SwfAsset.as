@@ -20,8 +20,6 @@ package {
 		private function doneLoad(event : Event) : void {
 			movieClip = MovieClip(loader.content);
 			addChild(movieClip);
-			movieClip.x = 0;
-			movieClip.y = 50;
 			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE,doneLoad);
 			loader = null;
 			addEventListener(Event.ENTER_FRAME,onFrameLoop);
