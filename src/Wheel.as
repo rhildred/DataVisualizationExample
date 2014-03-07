@@ -11,28 +11,37 @@ package {
 	 * @author rhildred
 	 */
 	public class Wheel extends Sprite {
-		private var oWheel:Bitmap;
-		private var oLoader:Loader = new Loader();
+		private var oWheel:Bitmap = null;
+		private var oBike:Bitmap = null;
+		private var oLoaderBike:Loader = new Loader(),
+			oLoaderWheel:Loader = new Loader();
 
 		public function Wheel() {
-			oLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, loaded);
-			oLoader.load(new URLRequest("assets/wheel.png"));
+			trace("oBike is: " + oBike);
+			trace("oWheel is: " + oWheel);
+			oLoaderWheel.contentLoaderInfo.addEventListener(Event.COMPLETE, loaded);
+			oLoaderWheel.load(new URLRequest("assets/wheel.png"));
+			oLoaderBike.contentLoaderInfo.addEventListener(Event.COMPLETE, loaded);
+			oLoaderBike.load(new URLRequest("assets/bike.png"));
 		}
 
 		private function loaded(event : Event) : void {
-			oWheel = Bitmap(oLoader.content);
+			oWheel = Bitmap(oLoaderWheel.content);
+			oBike = Bitmap(oLoaderBike.content);
 			addChild(oWheel);
-			addEventListener(Event.ENTER_FRAME, enterFrame);
+			addChild(oBike);
+			oBike.y = 21;
+			if(oBike != null && oWheel != null ) addEventListener(Event.ENTER_FRAME, enterFrame);
 		}
 
 		private function enterFrame(event : Event) : void {
-			//oWheel.x = mouseX;
+			oBike.x = mouseX;
+			oWheel.rotation = mouseX;
 			var oMatrix:Matrix = oWheel.transform.matrix;
 			var oRect:Rectangle = oWheel.getBounds(this);
-			oMatrix.translate(- (oRect.left + (oRect.width/2)), - (oRect.top + (oRect.height/2)));
-			oMatrix.rotate(mouseX%180/180 * Math.PI);
-			oMatrix.translate(oRect.left + (oRect.width/2), oRect.top + (oRect.height/2));
+			oMatrix.translate((- (oRect.left + ((oRect.width+1)/2))) + mouseX, (- (oRect.top + ((oRect.height+2)/2)))+150);
 			oWheel.transform.matrix = oMatrix;
+			//oWheel.x = mouseX;
 		}
 	}
 }
