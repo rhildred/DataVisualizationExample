@@ -1,2 +1,4 @@
 bin/*.swf
 lib/
+# OS X
+.DS_Store

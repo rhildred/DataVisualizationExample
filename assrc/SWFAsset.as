@@ -1,29 +1,34 @@
 package {
+	import flash.display.MovieClip;
 	import flash.net.URLRequest;
 	import flash.display.Loader;
-	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
 
 	/**
 	 * @author rhildred
 	 */
-	public class JPGAsset extends Sprite {
-		private var oImage:Bitmap;
+	public class SWFAsset extends Sprite {
+		private var oMovieClip:MovieClip;
 		private var oLoader:Loader = new Loader();
-		public function JPGAsset() {
+		public function SWFAsset() {
 			oLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoad);
-			oLoader.load(new URLRequest("assets/space2.jpg"));
+			oLoader.load(new URLRequest("frame_events.swf"));
 		}
 
 		private function onLoad(event : Event) : void {
-			oImage = Bitmap(oLoader.content);
-			addChild(oImage);
+			oMovieClip = MovieClip(oLoader.content);
+			addChild(oMovieClip);
 			
 			//following advice at end of LAS chapter 3
 			oLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoad);
 			oLoader = null;
+			addEventListener(Event.ENTER_FRAME,onFrameLoop);
 		}
-
+		
+		private function onFrameLoop(evt:Event):void {
+			oMovieClip["cycle"]["x"] = mouseX;
+			oMovieClip["cycle"]["wheel"]["rotation"] = mouseX;
+		}
 	}
 }

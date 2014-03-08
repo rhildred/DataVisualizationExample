@@ -21,8 +21,8 @@ package {
 			oLoaderWheel.contentLoaderInfo.addEventListener(Event.COMPLETE, loaded);
 			oLoaderBike.contentLoaderInfo.addEventListener(Event.COMPLETE, loaded);
 			// pngs exported from flash professional as png sequence
-			oLoaderWheel.load(new URLRequest("assets/wheel.png"));
-			oLoaderBike.load(new URLRequest("assets/bike.png"));
+			oLoaderWheel.load(new URLRequest("../img/wheel.png"));
+			oLoaderBike.load(new URLRequest("../img/bike.png"));
 		}
 
 		private function loaded(event : Event) : void {
