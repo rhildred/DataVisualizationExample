@@ -2,7 +2,6 @@ module.exports.random = function(req, res, next, callback) {
 	var aResults = new Array();
 	for(var n = 0; n <= 20; n++){
 		var oResult = {};
-		oResult.x = n;
 		oResult.y = Math.floor((Math.random()*20)+1);  
 		aResults.push(oResult);
 	}

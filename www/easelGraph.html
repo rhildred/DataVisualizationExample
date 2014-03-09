@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="canvas" width=500 height=450>
+</canvas>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/easeljs.min.js"></script>
+<script>
+//Draw a graph on screen.
+jQuery("document").ready(function(){
+	var stage = new createjs.Stage(document.getElementById('canvas'));
+	var shape = new createjs.Shape();
+	stage.addChild(shape);
+	jQuery.ajax({url: "/random", dataType: "json"}).done(function(aContents){
+		shape.graphics.beginStroke("#444");
+		for(var n = 0; n < aContents.length; n++){
+			if(n == 0) shape.graphics.moveTo(n*25, aContents[n]['y'] * 20);
+			else shape.graphics.lineTo(n*25, aContents[n]['y'] * 20);
+		}
+		stage.update();
+	});	
+});
+</script>
+</body>
+</html>
