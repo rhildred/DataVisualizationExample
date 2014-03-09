@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="canvas" width=550 height=400 >
+<img id="space" src="img/space2.jpg" />
+</canvas>
+<script src="js/easeljs.min.js"></script>
+<script>
+var stage = new createjs.Stage(document.getElementById('canvas'));
+var oBitmap = new createjs.Bitmap(document.getElementById('space'));
+stage.addChild(oBitmap);
+stage.update();
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="canvas" width=550 height=400 >
+<!-- stash the image inside the canvas so that it will be loaded when our document is ready -->
+<img id="bike" src="img/bike.png" />
+<img id="wheel" src="img/wheel.png" />
+</canvas>
+<script src="js/easeljs.min.js"></script>
+<script>
+(function() {
+	
+	// the wheel needs to be under the bike 
+	const bikeXOffset = 14;
+	const bikeYOffset = 155;
+
+	// the center isn't exactly in the middle of the bitmap
+	const centerXOffs = 6;
+	const centerYOffs = -4;
+
+	// the stage that we add children to is the canvas
+	var stage = new createjs.Stage(document.getElementById('canvas'));
+	
+	// create the wheel of the bike
+	var oWheel = new createjs.Bitmap(document.getElementById('wheel'));
+	stage.addChild(oWheel);
+	oWheel.x = bikeXOffset;
+	oWheel.y = bikeYOffset;
+	
+	// we can change the registration to change the center of rotation
+	var oRect = oWheel.getBounds();
+	oWheel.regX = (oRect.width + centerXOffs)/2;
+	oWheel.regY = (oRect.height+centerYOffs)/2;
+
+	//create the frame of the bike
+	var oBike = new createjs.Bitmap(document.getElementById('bike'));
+	oBike.y = 21;
+	stage.addChild(oBike);
+	stage.update();
+	
+	// don't need a timer if we have a mouse move event
+    window.onmousemove = handleMouseMove;
+
+    function handleMouseMove(event) {
+        event = event || window.event; // IE-ism
+        // event.clientX and event.clientY contain the mouse position
+        var mouseX = oBike.x = event.clientX;
+		oWheel.rotation = mouseX;
+		oWheel.x = mouseX + bikeXOffset;
+        stage.update();
+    }
+})();
+</script>
+</body>
+</html>
