@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="canvas" width=500 height=450>
+</canvas>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/easeljs.min.js"></script>
+<script>
+//Draw a graph on screen.
+jQuery("document").ready(function(){
+	const nScaleX = 25, nScaleY = 20;
+	var stage = new createjs.Stage(document.getElementById('canvas'));
+	var shape = new createjs.Shape();
+	stage.addChild(shape);
+	jQuery.ajax({url: "/random", dataType: "json"}).done(function(aContents){
+		shape.graphics.beginFill('rgba(255,0,0,1)');
+		for(var n = 0; n < aContents.length; n++){
+			if(n%2)shape.graphics.beginFill('rgba(0,255,0,1)');
+			else shape.graphics.beginFill('rgba(0,0,255,1)');
+			shape.graphics.drawRect(n*nScaleX,
+					stage.canvas.height - aContents[n]['y'] * nScaleY,
+					nScaleX, aContents[n]['y'] * nScaleY);
+		}
+		stage.update();
+	});	
+});
+</script>
+</body>
+</html>
