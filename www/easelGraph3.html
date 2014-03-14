@@ -1,29 +1,53 @@
 <!DOCTYPE html>
 <html>
 <body>
-<canvas id="canvas" width=500 height=450>
+<canvas id="mainStage" width=500 height=450>
 </canvas>
 <script src="js/jquery-1.11.0.min.js"></script>
 <script src="js/easeljs.min.js"></script>
 <script>
+
+//Converts from degrees to radians.
+Math.radians = function(degrees) {
+  return degrees * Math.PI / 180;
+};
+
 //Draw a graph on screen.
 jQuery("document").ready(function(){
+	var aFills = ["rgba(255,0,0,1)","rgba(255,255,0,1)","rgba(0,255,0,1)","rgba(0,255,255,1)","rgba(0,0,255,1)","rgba(0,0,0,1)"];
 	var aContents = new Array();
 	var nCumulative = 0;
+	//build the sections
 	for(var n = 0; n < 5; n++){
 		var oSlice = {};
 		oSlice.nArc = 360/3 * Math.random();
 		nCumulative += oSlice.nArc;
 		aContents.push(oSlice);
-		console.log(oSlice.nArc);
 	}
+	//deal with shortfall or more than 360 degrees
 	if(nCumulative > 360){
-		aContents[Math.random() * 5].nArc -= nCumulative - 360;
+		var n = Math.floor(Math.random() * 5);
+		aContents[n].nArc -= nCumulative - 360;
 	}else{
 		var oSlice = {};
 		oSlice.nArc = 360 - nCumulative;
 		aContents.push(oSlice);
-		console.log(oSlice.nArc);
+	}
+	// draw the array
+	var stage = new createjs.Stage(document.getElementById("mainStage"));
+	const oX = stage.canvas.width/2;
+	const oY = stage.canvas.height/2;
+	const r = stage.canvas.height/3;
+	var cumulativeAngle = 1.5*Math.PI;
+	for(var n = 0; n < aContents.length; n++){
+		var oShape = new createjs.Shape();
+		oShape.graphics.moveTo(oX,oY);
+		oShape.graphics.beginFill(aFills[n]);
+		var nSectorAngle = Math.radians(aContents[n].nArc);
+		oShape.graphics.arc(oX,oY,r,cumulativeAngle,cumulativeAngle+nSectorAngle);
+		cumulativeAngle += nSectorAngle;
+		stage.addChild(oShape);
+		stage.update();
 	}
 });
 </script>
