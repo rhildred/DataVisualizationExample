@@ -1,24 +1,60 @@
 <!DOCTYPE html>
 <html>
 <body>
-<canvas id="canvas" width=500 height=450>
+<p>screen width: <span id="nWidth">0</span></p>
+<p>screen height: <span id="nHeight">0</span></p>
+<canvas id="canvas">
 </canvas>
 <script src="js/jquery-1.11.0.min.js"></script>
 <script src="js/easeljs.min.js"></script>
+<script src="js/js-toolbox.js"></script>
 <script>
+// show width and height of screen
+
+var MyStage = Toolbox.Base.extend({
+	oStage: new createjs.Stage(document.getElementById('canvas')),
+	oShape: new createjs.Shape(),
+	constructor: function() {
+		this.oStage.addChild(this.oShape);
+		// go and get the data
+		jQuery.ajax({url: "/random", dataType: "json"}).
+			done(jQuery.proxy(this.updateContents, this));
+		jQuery(window).resize(jQuery.proxy(this.drawGraph, this));
+	},
+	// this is where data to be graphed will reside
+	aContents: null,
+	// updates contents
+	updateContents: function(aContents){
+		this.aContents = aContents;
+		this.drawGraph();
+	},
+	drawGraph: function() {
+		// write height and width of screen
+		var nWidth = jQuery(window).width();
+		var nHeight = jQuery(window).height();
+		jQuery("#nWidth").html(nWidth);
+		jQuery("#nHeight").html(nHeight);
+		
+		// draw graph
+		document.getElementById('canvas').width = nWidth;
+		document.getElementById('canvas').height = nWidth *4 /5;
+		var nScaleX = nWidth / this.aContents.length;
+		var nScaleY = 4* nScaleX / 5;
+		this.oShape.graphics.clear();
+ 		this.oShape.graphics.beginStroke("#444");
+ 		for(var n = 0; n < this.aContents.length; n++){
+ 			if(n == 0) this.oShape.graphics.moveTo(n*nScaleX, this.aContents[n]['y'] * nScaleY);
+ 			else this.oShape.graphics.lineTo(n*nScaleX, this.aContents[n]['y'] * nScaleY);
+ 		}
+ 		this.oStage.update();
+			
+	}
+});
+
+
 //Draw a graph on screen.
 jQuery("document").ready(function(){
-	var stage = new createjs.Stage(document.getElementById('canvas'));
-	var shape = new createjs.Shape();
-	stage.addChild(shape);
-	jQuery.ajax({url: "/random", dataType: "json"}).done(function(aContents){
-		shape.graphics.beginStroke("#444");
-		for(var n = 0; n < aContents.length; n++){
-			if(n == 0) shape.graphics.moveTo(n*25, aContents[n]['y'] * 20);
-			else shape.graphics.lineTo(n*25, aContents[n]['y'] * 20);
-		}
-		stage.update();
-	});	
+	var oStage = new MyStage();
 });
 </script>
 </body>
