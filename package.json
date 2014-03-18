@@ -25,7 +25,8 @@
   "dependencies": {
     "assert-runner": "*",
     "js-toolbox": "*",
-    "render-async": "*"
+    "render-async": "*",
+    "socket.io": "*"
   },
   "scripts": {
 	    "test": "./test.js"

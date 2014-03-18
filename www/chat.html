@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+<form id="chatForm">
+<input type="text" id="message" />
+<button type="submit">Send</button>
+</form>
+<div id="messages">
+</div>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/js-toolbox.js"></script>
+<script src="js/socket.io.min.js"></script>
+<script>
+jQuery(document).ready(function(){
+	
+	var Chat = Toolbox.Base.extend({
+		oSocket: io.connect(window.location.origin),
+		constructor: function(){
+			jQuery("#chatForm").submit(jQuery.proxy(this.sendMessage, this));
+			this.oSocket.on('message', jQuery.proxy(this.displayMessage, this));
+		},
+		sendMessage: function(){
+			this.oSocket.emit('message', {message: jQuery("#message").val()});
+			jQuery("#message").val("");
+			return false;
+		},
+		displayMessage: function(oMessage){
+			jQuery("#messages").append("<p>" + oMessage.message + "</p>");
+		}
+	});
+	
+	
+	new Chat();
+	
+	
+});
+</script>
+</body>
+</html>
